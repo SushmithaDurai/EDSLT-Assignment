@@ -11,12 +11,9 @@
 #define MSG 50 
  
 //Arrays to store the robots, tasks and the parts of the robots 
-const char *robots[ROBOTS] = {"Alpha", "Beta", "Gamma", "Delta", 
-"Epsilon", "Zeta"}; 
-const char *tasks[TASKS] = {"Rescue", "Debris", "Scan", "Map", "Supply", 
-"Alert"}; 
-const char *parts[PARTS] = {"Arm", "Sensor", "Camera", "Wheel", "Power 
-Unit", "Communicator"}; 
+const char *robots[ROBOTS] = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta"}; 
+const char *tasks[TASKS] = {"Rescue", "Debris", "Scan", "Map", "Supply", "Alert"}; 
+const char *parts[PARTS] = {"Arm", "Sensor", "Camera", "Wheel", "Power Unit", "Communicator"}; 
  
 ///////////////////////AN ARRAY OF RESCUE LOG/////////////////////////// 
  
