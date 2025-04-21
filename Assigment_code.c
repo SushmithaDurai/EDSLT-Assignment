@@ -32,8 +32,7 @@ void init_log(reslog *rl)//initialise the array
     rl->count = 0; 
 } 
  
-void logmsn(struct reslog *rl, const char *msn)//to add a completed 
-mission into the log 
+void logmsn(struct reslog *rl, const char *msn)//to add a completed mission into the log 
 { 
     int i = (rl->start + rl->count)%LOG; 
      
@@ -46,8 +45,7 @@ mission into the log
     else 
     { 
         //overwrite the oldest log if full 
-        printf("Log is full. Overwriting task: '%s'\n", 
-rl->msns[rl->start]); 
+        printf("Log is full. Overwriting task: '%s'\n", rl->msns[rl->start]); 
         strncpy(rl->msns[rl->start], msn, MSG); 
         rl->msns[rl->start][MSG-1] = '\0'; 
         rl->start = (rl->start+1)%LOG; 
@@ -96,8 +94,7 @@ int queue_empty(queue *q)//check if queue is empty
     return q->f == q->r; 
 } 
  
-void enqueue(queue *q, const char *task, reslog *rl)//add a task to the 
-mission queue 
+void enqueue(queue *q, const char *task, reslog *rl)//add a task to the mission queue 
 { 
     if (queue_full(q)) 
     { 
@@ -169,8 +166,7 @@ int stack_empty(stack *s)//check if stack is empty
     return s->top == -1; 
 } 
  
-void push(stack *s, const char *task, struct reslog *rl)//add an urgent 
-task to the stack 
+void push(stack *s, const char *task, struct reslog *rl)//add an urgent task to the stack 
 { 
     if (stack_full(s)) 
     { 
@@ -178,8 +174,7 @@ task to the stack
         return; 
     } 
     strncpy(s->tasks[++s->top], task, NAME); 
-    printf("Urgent task %s is added to the stack.\n", task); 
-     
+    printf("Urgent task %s is added to the stack.\n", task);      
     char msg[NAME * 2];//add this to the log 
     snprintf(msg, sizeof(msg), "Urgent task pushed: %s", task); 
     logmsn(rl, msg); 
@@ -227,17 +222,13 @@ dmgd *dmg_head = NULL;//keeping track of the head pointer
 void add_dmgd(const char *roboname, const char *part, reslog *rl) 
 { 
     struct dmgd *newnode = (dmgd *)malloc(sizeof(dmgd)); 
-    strncpy(newnode->robot, roboname, NAME);//keeps track of both the 
-damaged robot 
+    strncpy(newnode->robot, roboname, NAME);//keeps track of both the damaged robot 
     strncpy(newnode->part, part, NAME);//and its malfunctioned part 
     newnode->next = dmg_head; 
     dmg_head = newnode; 
-    printf("Robot %s is added to the damaged robots list. Its %s is 
-damaged.\n", roboname, part); 
-     
+    printf("Robot %s is added to the damaged robots list. Its %s is damaged.\n", roboname, part);
     char msg[100];//add this to the log 
-    snprintf(msg, sizeof(msg), "Robot damaged: %s (%s)", roboname, 
-part); 
+    snprintf(msg, sizeof(msg), "Robot damaged: %s (%s)", roboname, part); 
     logmsn(rl, msg); 
 } 
  
@@ -288,16 +279,14 @@ void add_rpd(const char *roboname, reslog *rl)
     } 
      
     rpd_tail = newnode; 
-    printf("Robot %s was added to the repaired robots list.\n", 
-roboname); 
+    printf("Robot %s was added to the repaired robots list.\n", roboname); 
      
     char msg[NAME * 2];//add this to the log 
     snprintf(msg, sizeof(msg), "Robot repaired: %s", roboname); 
     logmsn(rl, msg); 
 } 
  
-void display_rpd_fwd()//display the DLL by traversing in forward 
-direction(from head pointer) 
+void display_rpd_fwd()//display the DLL by traversing in forward direction(from head pointer) 
 { 
     if (rpd_head == NULL) 
     { 
@@ -344,8 +333,7 @@ void repair(const char *roboname, reslog *rl)
      
     if (temp == NULL) 
     { 
-        printf("Robot %s was not found in damaged robots list.\n", 
-roboname); 
+        printf("Robot %s was not found in damaged robots list.\n", roboname); 
         return; 
     } 
      
@@ -361,8 +349,7 @@ roboname);
     } 
      
     add_rpd(roboname, rl); 
-    printf("Repaired the robot %s and moved it to repaired list.\n", 
-roboname); 
+    printf("Repaired the robot %s and moved it to repaired list.\n", roboname); 
     free(temp); 
 } 
  
@@ -377,8 +364,7 @@ typedef struct cpr//structure definition for CLL
  
 cpr *cpr_tail = NULL;//keeping track of tail 
  
-void add_cpr(const char *roboname, reslog *rl)//add a robot on circular 
-priority redeployment 
+void add_cpr(const char *roboname, reslog *rl)//add a robot on circular priority redeployment 
 { 
     cpr *newnode = malloc(sizeof(cpr)); 
     strncpy(newnode->robot, roboname, NAME); 
@@ -395,16 +381,13 @@ priority redeployment
         cpr_tail = newnode; 
     } 
      
-    printf("Robot %s was added to Circular Priority Redeployment 
-list.\n", roboname); 
+    printf("Robot %s was added to Circular Priority Redeployment list.\n", roboname); 
     //add this into the log 
     char msg[NAME * 2]; 
     snprintf(msg, sizeof(msg), "Redeployment ready: %s", roboname); 
     logmsn(rl, msg); 
 } 
- 
- 
- 
+  
 void display_cpr()//to display the CLL 
 { 
     if (cpr_tail == NULL) 
@@ -422,8 +405,7 @@ void display_cpr()//to display the CLL
     }while (temp != cpr_tail->next); 
 } 
  
-void deploy_robot(reslog *rl)//to deploy the next robot in the priority 
-cycle 
+void deploy_robot(reslog *rl)//to deploy the next robot in the priority cycle 
 { 
     static cpr *current = NULL; 
     if(cpr_tail == NULL) 
@@ -521,8 +503,7 @@ void main()
                 if (pop(&urg_stack, task)) 
                 { 
                     char entry[64]; 
-                    snprintf(entry, 64, "Processed urgent task: %s", 
-task); 
+                    snprintf(entry, 64, "Processed urgent task: %s",task); 
                     logmsn(&res_log, entry); 
                 } 
                 break; 
@@ -537,9 +518,7 @@ task);
                 for (int i = 0; i < ROBOTS; i++) 
                 {     
                     printf("%d. %s\n", i + 1, robots[i]); 
-                } 
-                 
-     
+                }      
                 if (scanf("%d", &r_ch) != 1 || r_ch<1 || r_ch>ROBOTS)  
                 { 
                     printf("Invalid choice.\n"); 
@@ -562,8 +541,7 @@ task);
                 while ((ch = getchar()) != '\n' && ch != EOF); 
                  
                 char log_entry[64]; 
-                snprintf(log_entry, sizeof(log_entry), "Robot %s 
-completed task: %s", 
+                snprintf(log_entry, sizeof(log_entry), "Robot %s completed task: %s", 
                          robots[r_ch - 1], tasks[t_ch - 1]); 
                 logmsn(&res_log, log_entry); 
              
@@ -589,11 +567,9 @@ completed task: %s",
                 int part_ch; 
                 scanf("%d", &part_ch); 
                  
-                if (robot_ch>=1 && robot_ch<=ROBOTS && part_ch>=1 && 
-part_ch<=PARTS)  
+                if (robot_ch>=1 && robot_ch<=ROBOTS && part_ch>=1 && part_ch<=PARTS)  
                 { 
-                    add_dmgd(robots[robot_ch - 1], parts[part_ch-1], 
-&res_log); 
+                    add_dmgd(robots[robot_ch - 1], parts[part_ch-1], &res_log); 
                 }  
                 else  
                 { 
@@ -602,13 +578,11 @@ part_ch<=PARTS)
                 break; 
             case 9://repair a robot 
                 printf("Select a damaged robot to repair:\n"); 
- 
                 int i = 1; 
                 struct dmgd *temp = dmg_head; 
                 while (temp != NULL) 
                 { 
-                    printf("%d. %s (Issue: %s)\n", i, temp->robot, 
-temp->part); 
+                    printf("%d. %s (Issue: %s)\n", i, temp->robot, temp->part); 
                     temp = temp->next; 
                     i++; 
                 } 
@@ -657,7 +631,6 @@ temp->part);
                  
                 int cpr_ch; 
                 scanf("%d", &cpr_ch); 
-             
                 if (cpr_ch >= 1 && cpr_ch <= ROBOTS)  
                 { 
                     add_cpr(robots[cpr_ch - 1], &res_log); 
